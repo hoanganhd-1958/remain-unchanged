@@ -63,12 +63,18 @@ class RemainUnchangedCommand extends Command
                     );
 
                     if ($response->getHeader('Content-Type')[0] != 'application/json') {
-                        $this->sendMessageToChatwork('Có lỗi xảy ra');
+                        $this->sendMessageToChatwork('Token hết hạn, vui lòng vào link sau và sửa token https://docs.google.com/spreadsheets/d/1g3iaU_yyOE4z3Wp7KP1G-TQqmQq1Yy2MXGc5jxvej1c/edit?usp=sharing, và hệ thống sẽ chạy update lại vào ' . date("Y-m-d H:i:s",strtotime(date("Y-m-d H:i:s")." +30 minutes")));
                         throw new \ErrorException('Error');
                     }
                 }
+
+                $this->sendMessageToChatwork('Remain unchange thành công');
+                break;
             } catch (\Exception $ex) {
                 $attempts++;
+                if ($attempts == 5) {
+                    $this->sendMessageToChatwork('Remain unchange tuần này thất bại');
+                }
                 sleep(1800);
                 continue;
             }
