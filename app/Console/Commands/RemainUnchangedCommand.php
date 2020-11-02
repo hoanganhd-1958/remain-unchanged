@@ -70,7 +70,7 @@ class RemainUnchangedCommand extends Command
                         'https://goal.sun-asterisk.vn/api/v1/objectives/999999/remain_unchanged',
                         [
                             'headers' => [
-                                'Authorization' => $token
+                                'Authorization' => 'Bearer ' . $token
                             ],
                             'form_params' => [
                                 'keyResultId' => $value,
