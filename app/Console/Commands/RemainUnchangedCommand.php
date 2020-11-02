@@ -6,6 +6,7 @@ use App\Jobs\RemainUnchangedJob;
 use Illuminate\Console\Command;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use wataridori\ChatworkSDK\ChatworkRoom;
 use wataridori\ChatworkSDK\ChatworkSDK;
 use GuzzleHttp;
@@ -38,14 +39,29 @@ class RemainUnchangedCommand extends Command
      */
     public function handle()
     {
+        $refresh_token = Storage::get('token.txt');
         $client = new GuzzleHttp\Client();
+
+        $get_token = $client->request('POST', 'https://goal.sun-asterisk.vn/api/v1/refresh_token',
+            [
+                'headers' => [],
+                'form_params' => [
+                    'refresh_token' => $refresh_token,
+                ],
+            ]
+        );
+        $get_token = json_decode($get_token->getBody()->getContents());
+
+        Storage::put('token.txt', $get_token->data->refresh_token);
+
+        $token = $get_token->data->access_token;
+
         $NUM_OF_ATTEMPTS = 5;
         $attempts = 0;
         do {
             try {
                 $res = $client->request('GET', 'https://script.google.com/macros/s/AKfycbzyjngLeB0DGcnEllhcygUWgOu6LuPwRAuSfvaw_DlUg3LRbZTp/exec');
                 $data = json_decode($res->getBody()->getContents());
-                $token = $data->content->token[0];
                 $kr = $data->content->ids;
 
                 foreach ($kr as $value) {

@@ -8,6 +8,7 @@
         "php": "^7.2.5",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/lumen-framework": "^7.0",
+        "league/flysystem": "^1.1",
         "wataridori/chatwork-sdk": "^0.3.1"
     },
     "require-dev": {
