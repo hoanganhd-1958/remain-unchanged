@@ -56,7 +56,7 @@ class RemainUnchangedCommand extends Command
 
         $token = $get_token->data->access_token;
 
-        $NUM_OF_ATTEMPTS = 5;
+        $NUM_OF_ATTEMPTS = 1;
         $attempts = 0;
         do {
             try {

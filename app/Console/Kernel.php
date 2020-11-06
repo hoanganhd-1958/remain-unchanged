@@ -23,6 +23,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('remain_unchanged')
-            ->cron('0 3 * * MON');
+            ->cron('0 1 * * MON');
     }
 }
