@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\AutoReportCommand;
 use App\Console\Commands\RemainUnchangedCommand;
 use Illuminate\Console\Scheduling\Schedule;
 use Laravel\Lumen\Console\Kernel as ConsoleKernel;
@@ -14,7 +15,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        RemainUnchangedCommand::class
+        RemainUnchangedCommand::class,
+        AutoReportCommand::class,
     ];
 
     /**
@@ -23,6 +25,12 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('remain_unchanged')
-            ->cron('0 1 * * MON');
+            ->weekly()
+            ->mondays()
+            ->at('01:00');
+
+        $schedule->command('auto_report')
+            ->weekdays()
+            ->at('16:45');
     }
 }
